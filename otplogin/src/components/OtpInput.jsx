@@ -10,21 +10,43 @@ function OtpInput({length=4,onOtpSubmit=()=>{}}) {
         //allow only ont input
         newotp[index]=value.substring(value.length-1);//ng
         setOtp(newotp)      //setters are asynchornous
-        const combinedOtp=newotp.join("")
+        const combinedOtp=newotp.join("") //thats why we using newotp instead of setotp
         if(combinedOtp.length===length){
           onOtpSubmit(combinedOtp);  
         }
         //move to next input if current field is filled
-        if(value && index<length-1 && inputrefs.current[index+1]){
-            inputrefs.current[index+1 ].focus();
+        if(value && index<length-1 && inputrefs.current[index+1]){ //do we have access to next element
+            inputrefs.current[index+1].focus();
+        }
+        // Move to next empty input
+          const nextEmptyIndex =  newotp.indexOf("");
+
+        if(value && nextEmptyIndex!==-1 && inputrefs.current[nextEmptyIndex])
+        {
+            inputrefs.current[nextEmptyIndex].focus();
         }
 
-    }
-    const handleClick=()=>{
- 
-    }
-    const handlekeydown=()=>{
 
+
+    }
+const handleClick = (index) => {
+  const input = inputrefs.current[index];
+  if (input) {
+    input.setSelectionRange(1, 1); // move cursor to front
+
+  }
+  if(index>0 && !otp[index-1]){
+    inputrefs.current[otp.indexOf("")].focus();
+  }
+
+};
+
+  
+    //move to prev input if current field is filled
+  const handlekeydown=(index,e)=>{
+      if(e.key=="Backspace" && !otp[index] && index>0 && inputrefs.current[index-1] ){
+        inputrefs.current[index-1].focus();
+      }
     }
     console.log(inputrefs);
 
@@ -45,7 +67,7 @@ function OtpInput({length=4,onOtpSubmit=()=>{}}) {
 
             value={value}
             onChange={(e)=>handleChange(index,e)}
-            onClick={handleClick}
+            onClick={()=>handleClick(index)}
             onKeyDown={(e)=>handlekeydown(index,e)}
             />
           
