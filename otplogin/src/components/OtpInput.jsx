@@ -6,7 +6,7 @@ function OtpInput({length=4,onOtpSubmit=()=>{}}) {
     const handleChange=(index,e)=>{
         const value=e.target.value;
         if(isNaN(value)) return;  //not a number
-        const newotp=[...otp] //whatever is already inside the otp
+        const newotp=[...otp] //whatever is already inside the otp //not changing the state directly
         //allow only ont input
         newotp[index]=value.substring(value.length-1);//ng
         setOtp(newotp)      //setters are asynchornous
@@ -61,7 +61,7 @@ const handleClick = (index) => {
          otp.map((value,index)=>{
             return <input //imp
             key={index}
-            className='border border-gray-300 p-2 mt-5 ml-2 mr-2 w-[40px] h-[40px] text-xl rounded-sm '
+            className='border border-gray-300 p-2 mt-5 ml-2 mr-2 w-[40px] h-[40px] text-xl rounded-sm '   //diff btween % and px
             type='text'
             ref={(input)=>(inputrefs.current[index]=input)}
 
